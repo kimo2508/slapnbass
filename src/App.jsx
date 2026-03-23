@@ -29,7 +29,6 @@ function transposeKey(k, st) {
   return transposeNote(r[1], st) + (minor ? ' minor' : '');
 }
 
-// ── Nashville Number System: roman → arabic ──────────────────────────────────
 function romanToNashville(func) {
   if (!func) return '';
   const map = {
@@ -38,17 +37,14 @@ function romanToNashville(func) {
     'bII':'b2','bIII':'b3','bVII':'b7','bii':'b2','biii':'b3','bvii':'b7',
     '#IV':'#4','#iv':'#4',
   };
-  // Strip quality suffixes to find the numeral, then re-attach
   const quality = func.match(/(maj|min|dim|aug|sus|add|\d+|m(?!aj))+$/i)?.[0] || '';
   const numeral = func.slice(0, func.length - quality.length);
   const isLower = numeral === numeral.toLowerCase() && numeral !== numeral.toUpperCase();
   const num = map[numeral] || map[numeral.toUpperCase()] || numeral;
-  // Lowercase numerals = minor quality
   const minSuffix = isLower && !quality.includes('m') ? 'm' : '';
   return num + minSuffix + quality.replace(/^m(?!aj|in)/i, '');
 }
 
-// ── Quick suggests ───────────────────────────────────────────────────────────
 const SUGGESTIONS = [
   { title: 'Way Maker', artist: 'Sinach' },
   { title: 'Goodness of God', artist: 'Bethel Music' },
@@ -60,7 +56,6 @@ const SUGGESTIONS = [
   { title: 'Reckless Love', artist: 'Cory Asbury' },
 ];
 
-// ── AI chart fetch ───────────────────────────────────────────────────────────
 async function fetchChart(title, artist) {
   const resp = await fetch('/api/chat', {
     method: 'POST',
@@ -105,7 +100,6 @@ Return ONLY this JSON:
   return JSON.parse(text.replace(/```json|```/g, '').trim());
 }
 
-// ── CSS ──────────────────────────────────────────────────────────────────────
 const styles = `
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -162,6 +156,8 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .song-card { margin: 10px 16px 0; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; animation: slideUp 0.22s ease; }
 @keyframes slideUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform:none; } }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fusePop { from { opacity:0; transform: scale(0.5); } to { opacity:1; transform: scale(1); } }
+@keyframes fuseUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 .song-card-header { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .song-title { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; }
 .song-artist { font-size: 12px; color: var(--text2); margin-top: 2px; }
@@ -226,7 +222,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .bpm-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%; background: var(--accent); cursor: pointer; border: none; }
 .playhead-display { font-family: var(--mono); font-size: 10px; color: var(--text3); text-align: right; flex-shrink: 0; min-width: 56px; }
 
-/* ── Library tab ── */
 .library-view { padding: 14px 16px; }
 .library-label { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
 .library-empty { text-align: center; padding: 40px 0; color: var(--text3); font-size: 14px; line-height: 1.6; }
@@ -240,9 +235,7 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .lib-btn { padding: 5px 10px; font-size: 11px; font-weight: 500; font-family: var(--font); border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg3); color: var(--text2); cursor: pointer; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
 .lib-btn:active { border-color: var(--accent); color: var(--accent); }
 .lib-btn.danger:active { border-color: var(--red); color: var(--red); }
-.lib-star { color: var(--accent); font-size: 13px; margin-right: 2px; }
 
-/* ── Setlist tab ── */
 .setlist-view { padding: 14px 16px; }
 .setlist-name-input { font-size: 17px; font-weight: 600; color: var(--text); background: none; border: none; border-bottom: 1px solid var(--border); outline: none; font-family: var(--font); padding: 2px 0; width: 100%; margin-bottom: 14px; transition: border-color 0.15s; }
 .setlist-name-input:focus { border-bottom-color: var(--accent); }
@@ -252,7 +245,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .add-song-row .text-input { font-size: 13px; padding: 8px 10px; }
 .add-btn { padding: 8px 12px; background: var(--accent-bg); color: var(--accent); font-family: var(--font); font-size: 13px; font-weight: 600; border: 1px solid var(--accent); border-radius: var(--radius-sm); cursor: pointer; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
 .add-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-
 .setlist-empty { text-align: center; padding: 28px 0; color: var(--text3); font-size: 14px; line-height: 1.6; }
 .setlist-items { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
 .setlist-item { display: flex; align-items: center; gap: 7px; background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: var(--radius-sm); padding: 10px 11px; transition: border-color 0.12s; }
@@ -273,14 +265,12 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
 .item-load-btn { padding: 4px 9px; font-size: 11px; font-family: var(--font); font-weight: 500; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text2); cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
 .item-del { color: var(--text3); font-size: 17px; padding: 2px 4px; border: none; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; flex-shrink: 0; }
-
 .setlist-footer { display: flex; gap: 7px; flex-wrap: wrap; }
 .stage-btn { flex: 1; padding: 13px 18px; background: var(--accent); color: #0f0f0f; font-family: var(--font); font-size: 15px; font-weight: 700; border: none; border-radius: var(--radius); cursor: pointer; transition: opacity 0.15s, transform 0.1s; -webkit-tap-highlight-color: transparent; }
 .stage-btn:active { transform: scale(0.97); }
 .stage-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 .load-all-btn { padding: 13px 12px; background: var(--bg3); color: var(--text2); font-family: var(--font); font-size: 13px; font-weight: 500; border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
 .load-all-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-
 .saved-setlists { margin-top: 20px; }
 .saved-label { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
 .saved-item { display: flex; align-items: center; gap: 10px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; cursor: pointer; transition: border-color 0.15s; margin-bottom: 5px; -webkit-tap-highlight-color: transparent; }
@@ -290,7 +280,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .saved-item-meta { font-size: 12px; color: var(--text3); margin-top: 2px; }
 .saved-item-del { color: var(--text3); font-size: 18px; padding: 2px 6px; border: none; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
-/* ── Stage mode ── */
 .stage-overlay { position: fixed; inset: 0; z-index: 200; background: var(--bg); display: flex; flex-direction: column; max-width: 640px; margin: 0 auto; }
 .stage-topbar { background: rgba(15,15,15,0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .stage-setlist-name { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); }
@@ -324,9 +313,19 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .stage-cur { text-align: center; flex: 0; min-width: 0; }
 .stage-cur-title { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
 .stage-cur-key { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 1px; }
+
+/* ── Fuse branding ── */
+.fuse-splash { position: fixed; inset: 0; z-index: 9999; background: #0C0B0A; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+.fuse-splash-icon { width: 64px; height: 64px; background: #E8503C; border-radius: 18px; display: flex; align-items: center; justify-content: center; animation: fusePop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.3s both; }
+.fuse-splash-name { font-family: 'Sora', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -0.5px; color: #fff; animation: fuseUp 0.4s ease 0.7s both; }
+.fuse-splash-by { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.14em; text-transform: uppercase; animation: fuseUp 0.4s ease 0.9s both; }
+.fuse-footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 10px 16px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.fuse-footer-icon { width: 15px; height: 15px; background: #0C0B0A; border: 1px solid #333; border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fuse-footer-word { font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700; color: #555; letter-spacing: 0.08em; }
+.fuse-footer-sep { font-size: 10px; color: #333; }
+.fuse-footer-by { font-size: 10px; color: #555; }
 `;
 
-// ── Chord chart + tab content (shared) ───────────────────────────────────────
 function ChartContent({ data, transpose, onTransposeChange, showTransport }) {
   const [activeTab, setActiveTab] = useState('chart');
   const [isPlaying, setIsPlaying] = useState(false);
@@ -451,7 +450,6 @@ function ChartContent({ data, transpose, onTransposeChange, showTransport }) {
   );
 }
 
-// ── Stage mode ───────────────────────────────────────────────────────────────
 function StageMode({ setlistName, songs, onExit }) {
   const [idx, setIdx] = useState(0);
   const [tps, setTps] = useState(() => songs.map(() => 0));
@@ -581,11 +579,8 @@ function StageMode({ setlistName, songs, onExit }) {
   );
 }
 
-// ── Main App ─────────────────────────────────────────────────────────────────
 export default function App() {
-  const [view, setView] = useState('search'); // 'search' | 'library' | 'setlist'
-
-  // Search
+  const [view, setView] = useState('search');
   const [songTitle, setSongTitle] = useState('');
   const [songArtist, setSongArtist] = useState('');
   const [loading, setLoading] = useState(false);
@@ -593,12 +588,10 @@ export default function App() {
   const [songData, setSongData] = useState(null);
   const [transpose, setTranspose] = useState(0);
 
-  // Library — all saved songs with full chart data
   const [library, setLibrary] = useState(() => {
     try { return JSON.parse(localStorage.getItem('bass-library') || '[]'); } catch { return []; }
   });
 
-  // Setlist
   const [setlistName, setSetlistName] = useState('Sunday Service');
   const [addTitle, setAddTitle] = useState('');
   const [addArtist, setAddArtist] = useState('');
@@ -608,7 +601,20 @@ export default function App() {
   });
   const [stageOpen, setStageOpen] = useState(false);
 
-  // Drag reorder state
+  // ── Fuse splash ──
+  const [showSplash, setShowSplash] = useState(() => {
+    return !localStorage.getItem('fuse_selah_launched');
+  });
+  useEffect(() => {
+    if (showSplash) {
+      const t = setTimeout(() => {
+        setShowSplash(false);
+        localStorage.setItem('fuse_selah_launched', '1');
+      }, 2400);
+      return () => clearTimeout(t);
+    }
+  }, [showSplash]);
+
   const dragIdx = useRef(null);
   const dragOverIdx = useRef(null);
 
@@ -650,7 +656,6 @@ export default function App() {
     setView('setlist');
   }
 
-  // Setlist functions
   function addToSetlist() {
     if (!addTitle.trim()) return;
     setSetlistSongs(p => [...p, { title: addTitle.trim(), artist: addArtist.trim(), status: 'pending', data: null }]);
@@ -662,7 +667,6 @@ export default function App() {
   async function loadSongAt(i) {
     const song = setlistSongs[i];
     if (!song || song.status === 'loaded' || song.status === 'loading') return;
-    // Check library first
     const cached = library.find(s => s.title === song.title && s.artist === song.artist);
     if (cached) {
       setSetlistSongs(p => { const n=[...p]; n[i]={...n[i], status:'loaded', data:cached}; return n; });
@@ -691,7 +695,6 @@ export default function App() {
 
   function loadSaved(sl) { setSetlistName(sl.name); setSetlistSongs(sl.songs.map(s=>({...s,status:'pending',data:null}))); }
 
-  // Drag to reorder
   function onDragStart(i) { dragIdx.current = i; }
   function onDragOver(e, i) { e.preventDefault(); dragOverIdx.current = i; }
   function onDrop() {
@@ -705,11 +708,9 @@ export default function App() {
     dragIdx.current = null; dragOverIdx.current = null;
   }
 
-  // Touch drag reorder
   const touchDragIdx = useRef(null);
   function onTouchDragStart(e, i) { touchDragIdx.current = i; }
   function onTouchDragEnd(e, i) {
-    // Simple up/down swap via touch
     const touch = e.changedTouches[0];
     const el = document.elementFromPoint(touch.clientX, touch.clientY);
     const itemEl = el?.closest('[data-setlist-idx]');
@@ -734,10 +735,25 @@ export default function App() {
   return (
     <>
       <style>{styles}</style>
+
+      {/* ── Fuse splash ── */}
+      {showSplash && (
+        <div className="fuse-splash">
+          <div className="fuse-splash-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <line x1="5" y1="16" x2="22" y2="16" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+              <circle cx="22" cy="16" r="6" stroke="white" strokeWidth="2"/>
+              <circle cx="22" cy="16" r="2.4" fill="white"/>
+            </svg>
+          </div>
+          <div className="fuse-splash-name">Selah</div>
+          <div className="fuse-splash-by">a fuse app · by TNT Labs</div>
+        </div>
+      )}
+
       {stageOpen && <StageMode setlistName={setlistName} songs={setlistSongs} onExit={() => setStageOpen(false)} />}
 
       <div className="app">
-        {/* Nav — 4 tabs */}
         <div className="nav-bar">
           <div className="nav-logo">
             <div className="logo-icon">
@@ -751,7 +767,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* ── SEARCH ── */}
         {view === 'search' && (
           <>
             <div className="search-section">
@@ -821,7 +836,6 @@ export default function App() {
           </>
         )}
 
-        {/* ── LIBRARY ── */}
         {view === 'library' && (
           <div className="library-view">
             <div className="library-label">My song library ({library.length})</div>
@@ -850,11 +864,9 @@ export default function App() {
           </div>
         )}
 
-        {/* ── SETLIST ── */}
         {view === 'setlist' && (
           <div className="setlist-view">
             <input className="setlist-name-input" value={setlistName} onChange={e=>setSetlistName(e.target.value)} placeholder="Setlist name" />
-
             <div className="add-song-area">
               <div className="add-area-label">Add song</div>
               <div className="add-song-row">
@@ -872,20 +884,8 @@ export default function App() {
             ) : (
               <div className="setlist-items">
                 {setlistSongs.map((song, i) => (
-                  <div
-                    key={i}
-                    data-setlist-idx={i}
-                    className={`setlist-item ${song.status}`}
-                    draggable
-                    onDragStart={() => onDragStart(i)}
-                    onDragOver={e => onDragOver(e, i)}
-                    onDrop={onDrop}
-                  >
-                    <div
-                      className="item-drag-handle"
-                      onTouchStart={e => onTouchDragStart(e, i)}
-                      onTouchEnd={e => onTouchDragEnd(e, i)}
-                    >☰</div>
+                  <div key={i} data-setlist-idx={i} className={`setlist-item ${song.status}`} draggable onDragStart={() => onDragStart(i)} onDragOver={e => onDragOver(e, i)} onDrop={onDrop}>
+                    <div className="item-drag-handle" onTouchStart={e => onTouchDragStart(e, i)} onTouchEnd={e => onTouchDragEnd(e, i)}>☰</div>
                     <div className="item-num">{i+1}</div>
                     <div className="item-info">
                       <div className="item-title">{song.title}</div>
@@ -934,6 +934,20 @@ export default function App() {
             )}
           </div>
         )}
+
+        {/* ── Fuse footer ── */}
+        <div className="fuse-footer">
+          <div className="fuse-footer-icon">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+              <line x1="1.5" y1="4.5" x2="6.5" y2="4.5" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
+              <circle cx="6.5" cy="4.5" r="1.8" stroke="white" strokeWidth="0.9"/>
+            </svg>
+          </div>
+          <span className="fuse-footer-word">fuse</span>
+          <span className="fuse-footer-sep">·</span>
+          <span className="fuse-footer-by">by TNT Labs</span>
+        </div>
+
       </div>
     </>
   );
