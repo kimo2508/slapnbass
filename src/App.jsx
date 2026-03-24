@@ -603,13 +603,13 @@ export default function App() {
 
   // ── Fuse splash ──
   const [showSplash, setShowSplash] = useState(() => {
-    return !localStorage.getItem('fuse_selah_launched');
+    return !sessionStorage.getItem('fuse_selah_launched_v2');
   });
   useEffect(() => {
     if (showSplash) {
       const t = setTimeout(() => {
         setShowSplash(false);
-        localStorage.setItem('fuse_selah_launched', '1');
+        sessionStorage.setItem('fuse_selah_launched_v2', '1');
       }, 2400);
       return () => clearTimeout(t);
     }
