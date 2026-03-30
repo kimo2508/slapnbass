@@ -1139,11 +1139,9 @@ function ServicesView({ onAddToSetlist, instrument }) {
   const [planSongs, setPlanSongs] = useState({});
   const [loadingSongs, setLoadingSongs] = useState({});
   const [pdfViewer, setPdfViewer] = useState(null);
-  const [loadingPdf, setLoadingPdf] = useState({});
   const [hasLoaded, setHasLoaded] = useState(false);
 
   async function syncPlans() {
-    setSyncing(true); setError('');
     try {
       const data = await pcoGet('myPlans');
       const planPeople = data.data || [];
