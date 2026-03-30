@@ -1037,7 +1037,6 @@ export default function App() {
     if (touchDragIdx.current === null) return;
     e.preventDefault();
     const y = e.touches[0].clientY;
-    setTouchDragY(y);
     // Find which item we're hovering over
     if (listRef.current) {
       const items = listRef.current.querySelectorAll('[data-setlist-idx]');
