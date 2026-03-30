@@ -283,6 +283,9 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .status-dot.error { background: var(--red); }
 .status-dot.pending { background: var(--border2); }
 @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+@keyframes iconPop { from { opacity:0; transform: scale(0.5); } to { opacity:1; transform: scale(1); } }
+@keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+@keyframes splashFade { 0%{opacity:1;} 80%{opacity:1;} 100%{opacity:0;} }
 .item-load-btn { padding: 4px 9px; font-size: 11px; font-family: var(--font); font-weight: 500; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text2); cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
 .item-del { color: var(--text3); font-size: 17px; padding: 2px 4px; border: none; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; flex-shrink: 0; }
 .setlist-footer { display: flex; gap: 7px; flex-wrap: wrap; }
@@ -694,25 +697,42 @@ function ServicesView({ onAddToSetlist }) {
     setError('');
     try {
       const data = await pcoGet('myPlans');
-      const plans = data.data || [];
-      // Enrich with service type name from included
+      const planPeople = data.data || [];
       const included = data.included || [];
-      const enriched = plans.map(plan => {
-        const stRel = plan.relationships?.service_type?.data;
-        const st = stRel ? included.find(i => i.type === 'ServiceType' && i.id === stRel.id) : null;
-        return {
-          id: plan.id,
-          serviceTypeId: stRel?.id,
+
+      // Build a map of included resources
+      const includedMap = {};
+      included.forEach(i => { includedMap[`${i.type}:${i.id}`] = i; });
+
+      // Deduplicate by plan ID — person may appear multiple times per plan
+      const seenPlanIds = new Set();
+      const enriched = [];
+
+      planPeople.forEach(pp => {
+        const planRel = pp.relationships?.plan?.data;
+        const stRel = pp.relationships?.service_type?.data;
+        if (!planRel || seenPlanIds.has(planRel.id)) return;
+        seenPlanIds.add(planRel.id);
+
+        const plan = includedMap[`Plan:${planRel.id}`];
+        const st = stRel ? includedMap[`ServiceType:${stRel.id}`] : null;
+
+        enriched.push({
+          id: planRel.id,
+          serviceTypeId: st?.id || stRel?.id,
           serviceName: st?.attributes?.name || 'Service',
-          date: plan.attributes?.sort_date,
-          title: plan.attributes?.title || '',
-          totalLength: plan.attributes?.total_length,
-        };
+          date: plan?.attributes?.sort_date,
+          title: plan?.attributes?.title || '',
+          totalLength: plan?.attributes?.total_length,
+        });
       });
+
+      // Sort by date ascending
+      enriched.sort((a, b) => new Date(a.date) - new Date(b.date));
       setMyPlans(enriched);
       setHasLoaded(true);
     } catch (e) {
-      setError('Could not connect to Planning Center. Check your API credentials in Vercel.');
+      setError('Could not connect to Planning Center. ' + e.message);
     } finally {
       setSyncing(false);
     }
@@ -946,6 +966,12 @@ function ServicesView({ onAddToSetlist }) {
 // ── Main App ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [view, setView] = useState('services');
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowSplash(false), 2400);
+    return () => clearTimeout(t);
+  }, []);
 
   // Search
   const [songTitle, setSongTitle] = useState('');
@@ -1082,6 +1108,37 @@ export default function App() {
   return (
     <>
       <style>{styles}</style>
+
+      {/* ── Splash screen ── */}
+      {showSplash && (
+        <div style={{
+          position:'fixed', inset:0, background:'#0C0B0A', zIndex:9999,
+          display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+          gap:14, animation:'splashFade 2.4s ease forwards',
+          fontFamily:"'Sora', sans-serif",
+        }}>
+          <div style={{
+            width:68, height:68, background:'#e8c170', borderRadius:18,
+            display:'flex', alignItems:'center', justifyContent:'center',
+            animation:'iconPop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s both',
+          }}>
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="#0f0f0f">
+              <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 3a1 1 0 0 1 1 1v6.17A3 3 0 1 1 9 16V7a1 1 0 0 1 1-1h2zm-2 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0z"/>
+            </svg>
+          </div>
+          <div style={{
+            fontSize:42, fontWeight:700, letterSpacing:10,
+            color:'#fff', lineHeight:1,
+            animation:'fadeUp 0.4s ease 0.6s both',
+          }}>SELAH</div>
+          <div style={{
+            fontSize:10, color:'rgba(255,255,255,0.3)',
+            letterSpacing:'0.16em', textTransform:'uppercase',
+            animation:'fadeUp 0.4s ease 0.85s both',
+          }}>Fuse Apps · by TNT Labs</div>
+        </div>
+      )}
+
       {stageOpen && <StageMode setlistName={setlistName} songs={setlistSongs} onExit={() => setStageOpen(false)} />}
 
       <div className="app">
@@ -1245,6 +1302,26 @@ export default function App() {
             )}
           </div>
         )}
+
+        {/* ── Footer ── */}
+        <div style={{
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+          padding: '12px 16px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+        }}>
+          <div style={{
+            width:16, height:16, background:'#1a1a1a', border:'1px solid rgba(255,255,255,0.12)',
+            borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0,
+          }}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)">
+              <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 3a1 1 0 0 1 1 1v6.17A3 3 0 1 1 9 16V7a1 1 0 0 1 1-1h2zm-2 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0z"/>
+            </svg>
+          </div>
+          <span style={{ fontFamily:"'Sora',sans-serif", fontSize:10, color:'rgba(255,255,255,0.2)', letterSpacing:'0.1em', textTransform:'uppercase' }}>Fuse Apps</span>
+          <span style={{ fontSize:10, color:'rgba(255,255,255,0.1)' }}>·</span>
+          <span style={{ fontFamily:"'Sora',sans-serif", fontSize:10, color:'rgba(255,255,255,0.15)', letterSpacing:'0.05em' }}>by TNT Labs</span>
+        </div>
+
       </div>
     </>
   );
