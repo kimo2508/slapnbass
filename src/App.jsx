@@ -1336,11 +1336,7 @@ function ServicesView({ onAddToSetlist, instrument }) {
                   </div>
                 ))}
                 {songs.length > 0 && (
-                  <button className="import-all-btn" onClick={() => {
-  songs.forEach(s => onAddToSetlist(s, plan.serviceName + ' · ' + dp.full));
-  setSetlistName(plan.serviceName + ' · ' + dp.full);
-}}>
-  Import all {songs.length} songs → Setlist
+                  
 <button className="import-all-btn" onClick={() => { songs.forEach(s => onAddToSetlist(s, plan.serviceName + ' · ' + dp.full)); setSetlistName(plan.serviceName + ' · ' + dp.full); }}>Import all {songs.length} songs → Setlist</button>                )}
               </div>
             )}
