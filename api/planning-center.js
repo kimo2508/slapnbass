@@ -61,28 +61,36 @@ export default async function handler(req, res) {
         );
       } catch (e) {}
 
-      // DEBUG — remove after testing
-      console.log('ATTACHMENTS planAttachments count:', planAttachments.data?.length);
-      console.log('ATTACHMENTS itemAttachments included:', JSON.stringify(itemAttachments.included?.slice(0,3)));
+      const allPlan = planAttachments.data || [];
+      const allItem = itemAttachments.included?.filter(i => i.type === 'Attachment') || [];
+      console.log('ATTACH plan count:', allPlan.length, 'item count:', allItem.length);
+      console.log('ATTACH filenames:', JSON.stringify([...allPlan, ...allItem].map(a => a.attributes?.filename || a.attributes?.content_type || 'unknown')));
 
       return res.status(200).json({
-        planAttachments: planAttachments.data || [],
-        itemAttachments: itemAttachments.included?.filter(i => i.type === 'Attachment') || [],
+        planAttachments: allPlan,
+        itemAttachments: allItem,
         items: itemAttachments.data || [],
       });
     }
-    
+
     if (action === 'attachmentUrl' && serviceTypeId && planId && attachmentId) {
+      // Get attachment metadata first
+      const attachData = await pcoFetch(
+        `/services/v2/service_types/${serviceTypeId}/plans/${planId}/attachments/${attachmentId}`
+      );
+      const attrs = attachData?.data?.attributes || {};
+      console.log('ATTACHURL attrs:', JSON.stringify({ filename: attrs.filename, content_type: attrs.content_type, file_download_url: attrs.file_download_url, open_url: attrs.open_url }));
+
+      // Try /open for a signed URL
       try {
-        const data = await pcoFetch(
+        const openData = await pcoFetch(
           `/services/v2/service_types/${serviceTypeId}/plans/${planId}/attachments/${attachmentId}/open`
         );
-        return res.status(200).json(data);
+        console.log('OPEN success:', JSON.stringify(openData?.data?.attributes));
+        return res.status(200).json(openData);
       } catch (e) {
-        const data = await pcoFetch(
-          `/services/v2/service_types/${serviceTypeId}/plans/${planId}/attachments/${attachmentId}`
-        );
-        return res.status(200).json(data);
+        console.log('OPEN failed:', e.message, 'using direct attrs');
+        return res.status(200).json(attachData);
       }
     }
 
