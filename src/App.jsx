@@ -1335,10 +1335,9 @@ function ServicesView({ onAddToSetlist, instrument }) {
                     </div>
                   </div>
                 ))}
-                {songs.length > 0 && (   
-<button className="import-all-btn" onClick={() => { songs.forEach(s => onAddToSetlist(s, plan.serviceName + ' · ' + dp.full)); setSetlistName(plan.serviceName + ' · ' + dp.full); }}>Import all {songs.length} songs → Setlist</button>              </div>
-            )}
-          </div>
+                {songs.length > 0 && (
+  <button className="import-all-btn" onClick={() => { songs.forEach(s => onAddToSetlist(s, plan.serviceName + ' · ' + dp.full)); setSetlistName(plan.serviceName + ' · ' + dp.full); }}>Import all {songs.length} songs → Setlist</button>
+)}          </div>
         );
       })}
       {pdfViewer && <PDFViewer song={pdfViewer.song} url={pdfViewer.url} onClose={() => setPdfViewer(null)} />}
