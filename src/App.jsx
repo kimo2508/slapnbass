@@ -48,12 +48,12 @@ function romanToNashville(func) {
 
 // ── Instrument definitions ───────────────────────────────────────────────────
 const INSTRUMENTS = [
-  { id: 'bass',     label: 'Bass',           emoji: '🎸', color: '#e8c170', tabLabel: 'Bass Tab',        notesLabel: 'Player Notes' },
-  { id: 'acoustic', label: 'Acoustic Guitar', emoji: '🎸', color: '#7ec98f', tabLabel: 'Guitar Tab',      notesLabel: 'Player Notes' },
-  { id: 'electric', label: 'Electric Guitar', emoji: '⚡', color: '#5b9cf6', tabLabel: 'Guitar Tab',      notesLabel: 'Player Notes' },
-  { id: 'keys',     label: 'Keys / Piano',    emoji: '🎹', color: '#b59cf6', tabLabel: 'Voicings',        notesLabel: 'Player Notes' },
-  { id: 'drums',    label: 'Drums',           emoji: '🥁', color: '#f07070', tabLabel: 'Song Map',        notesLabel: 'Player Notes' },
-  { id: 'vocals',   label: 'Vocals',          emoji: '🎤', color: '#f0a070', tabLabel: 'Lyrics',          notesLabel: 'Player Notes' },
+  { id: 'bass',     label: 'Bass',           emoji: '🎸', color: '#e8c170', tabLabel: 'Bass Tab',   notesLabel: 'Player Notes' },
+  { id: 'acoustic', label: 'Acoustic Guitar', emoji: '🎸', color: '#7ec98f', tabLabel: 'Guitar Tab', notesLabel: 'Player Notes' },
+  { id: 'electric', label: 'Electric Guitar', emoji: '⚡', color: '#5b9cf6', tabLabel: 'Guitar Tab', notesLabel: 'Player Notes' },
+  { id: 'keys',     label: 'Keys / Piano',    emoji: '🎹', color: '#b59cf6', tabLabel: 'Voicings',   notesLabel: 'Player Notes' },
+  { id: 'drums',    label: 'Drums',           emoji: '🥁', color: '#f07070', tabLabel: 'Song Map',   notesLabel: 'Player Notes' },
+  { id: 'vocals',   label: 'Vocals',          emoji: '🎤', color: '#f0a070', tabLabel: 'Lyrics',     notesLabel: 'Player Notes' },
 ];
 
 function getInstrument(id) {
@@ -68,41 +68,23 @@ function buildPrompt(title, artist, instrumentId) {
     return `${base}
 Generate a drum roadmap for this worship song.
 {
-  "title": "song title",
-  "artist": "artist name",
-  "key": "key e.g. G",
-  "bpm": 72,
-  "timeSignature": "4/4",
+  "title": "song title","artist": "artist name","key": "key e.g. G","bpm": 72,"timeSignature": "4/4",
   "sections": [
-    {
-      "name": "Intro",
-      "repeat": 1,
-      "bars": 4,
-      "lines": [
-        [{"chord": "—", "beats": 4, "function": ""}]
-      ]
-    },
-    {
-      "name": "Verse",
-      "repeat": 2,
-      "bars": 8,
-      "lines": [
-        [{"chord": "—", "beats": 4, "function": ""}]
-      ]
-    }
+    {"name": "Intro","repeat": 1,"bars": 4,"lines": [[{"chord": "—","beats": 4,"function": ""}]]},
+    {"name": "Verse","repeat": 2,"bars": 8,"lines": [[{"chord": "—","beats": 4,"function": ""}]]}
   ],
   "bassTab": null,
   "drumMap": {
-    "Intro": {"feel": "soft brushes or light sticks", "dynamics": "pp", "notes": "establish the groove quietly"},
-    "Verse": {"feel": "hi-hat pattern, soft kick on 1 and 3", "dynamics": "mp", "notes": "stay light, let the vocals breathe"},
-    "Chorus": {"feel": "open hi-hat on 2 and 4, full kit", "dynamics": "mf", "notes": "drive with energy, crash on 1"},
-    "Bridge": {"feel": "half-time feel or build", "dynamics": "f", "notes": "big fill into last chorus"}
+    "Intro": {"feel": "soft brushes or light sticks","dynamics": "pp","notes": "establish the groove quietly"},
+    "Verse": {"feel": "hi-hat pattern, soft kick on 1 and 3","dynamics": "mp","notes": "stay light, let the vocals breathe"},
+    "Chorus": {"feel": "open hi-hat on 2 and 4, full kit","dynamics": "mf","notes": "drive with energy, crash on 1"},
+    "Bridge": {"feel": "half-time feel or build","dynamics": "f","notes": "big fill into last chorus"}
   },
   "bassNotes": {
     "feel": "Overall groove and feel description for the drummer",
     "rootNotes": "Key signature and time feel notes",
     "dynamics": "How dynamics should build through the song",
-    "tips": ["Tip about the kick pattern", "Tip about hi-hat feel", "Tip about fills and transitions"]
+    "tips": ["Tip about the kick pattern","Tip about hi-hat feel","Tip about fills and transitions"]
   }
 }`;
   }
@@ -111,34 +93,22 @@ Generate a drum roadmap for this worship song.
     return `${base}
 Generate a vocal chart for this worship song with lyrics and chord markers.
 {
-  "title": "song title",
-  "artist": "artist name",
-  "key": "key e.g. G",
-  "bpm": 72,
-  "timeSignature": "4/4",
+  "title": "song title","artist": "artist name","key": "key e.g. G","bpm": 72,"timeSignature": "4/4",
   "sections": [
-    {
-      "name": "Verse",
-      "repeat": 2,
-      "lines": [
-        [{"chord": "G", "beats": 4, "function": "I", "lyric": "First line of lyrics here"}],
-        [{"chord": "C", "beats": 4, "function": "IV", "lyric": "Second line of lyrics here"}]
-      ]
-    },
-    {
-      "name": "Chorus",
-      "repeat": 2,
-      "lines": [
-        [{"chord": "G", "beats": 2, "function": "I", "lyric": "Chorus first line"},{"chord": "D", "beats": 2, "function": "V", "lyric": ""}]
-      ]
-    }
+    {"name": "Verse","repeat": 2,"lines": [
+      [{"chord": "G","beats": 4,"function": "I","lyric": "First line of lyrics here"}],
+      [{"chord": "C","beats": 4,"function": "IV","lyric": "Second line of lyrics here"}]
+    ]},
+    {"name": "Chorus","repeat": 2,"lines": [
+      [{"chord": "G","beats": 2,"function": "I","lyric": "Chorus first line"},{"chord": "D","beats": 2,"function": "V","lyric": ""}]
+    ]}
   ],
   "bassTab": null,
   "bassNotes": {
     "feel": "Vocal style and delivery notes",
     "rootNotes": "Range and key notes for the vocalist",
     "dynamics": "Where to build energy and pull back",
-    "tips": ["Breathing tip", "Phrasing tip", "Harmony or ad-lib opportunity"]
+    "tips": ["Breathing tip","Phrasing tip","Harmony or ad-lib opportunity"]
   }
 }`;
   }
@@ -147,38 +117,26 @@ Generate a vocal chart for this worship song with lyrics and chord markers.
     return `${base}
 Generate a keys/piano chart for this worship song.
 {
-  "title": "song title",
-  "artist": "artist name",
-  "key": "key e.g. G",
-  "bpm": 72,
-  "timeSignature": "4/4",
+  "title": "song title","artist": "artist name","key": "key e.g. G","bpm": 72,"timeSignature": "4/4",
   "sections": [
-    {
-      "name": "Verse",
-      "repeat": 2,
-      "lines": [
-        [{"chord": "G", "beats": 4, "function": "I"}, {"chord": "C", "beats": 4, "function": "IV"}],
-        [{"chord": "D", "beats": 4, "function": "V"}, {"chord": "G", "beats": 4, "function": "I"}]
-      ]
-    },
-    {
-      "name": "Chorus",
-      "repeat": 2,
-      "lines": [
-        [{"chord": "G", "beats": 4, "function": "I"}, {"chord": "D", "beats": 4, "function": "V"}],
-        [{"chord": "Em", "beats": 4, "function": "vi"}, {"chord": "C", "beats": 4, "function": "IV"}]
-      ]
-    }
+    {"name": "Verse","repeat": 2,"lines": [
+      [{"chord": "G","beats": 4,"function": "I"},{"chord": "C","beats": 4,"function": "IV"}],
+      [{"chord": "D","beats": 4,"function": "V"},{"chord": "G","beats": 4,"function": "I"}]
+    ]},
+    {"name": "Chorus","repeat": 2,"lines": [
+      [{"chord": "G","beats": 4,"function": "I"},{"chord": "D","beats": 4,"function": "V"}],
+      [{"chord": "Em","beats": 4,"function": "vi"},{"chord": "C","beats": 4,"function": "IV"}]
+    ]}
   ],
   "bassTab": {
-    "Verse": {"voicing": "Open voicing, root-5th-3rd, soft pads", "leftHand": "Root notes only", "rightHand": "Gentle arpeggios or sustained chords", "description": "Lay back, support the band without cluttering"},
-    "Chorus": {"voicing": "Full chord voicings, 1st inversion on D", "leftHand": "Root-fifth", "rightHand": "Full chords on beat 1, arpeggiate on 2-4", "description": "Fill out the sound, drive the energy"}
+    "Verse": {"voicing": "Open voicing, root-5th-3rd, soft pads","leftHand": "Root notes only","rightHand": "Gentle arpeggios or sustained chords","description": "Lay back, support the band without cluttering"},
+    "Chorus": {"voicing": "Full chord voicings, 1st inversion on D","leftHand": "Root-fifth","rightHand": "Full chords on beat 1, arpeggiate on 2-4","description": "Fill out the sound, drive the energy"}
   },
   "bassNotes": {
     "feel": "Overall keys role in the band for this song",
     "rootNotes": "Key chord shapes and inversions to use",
     "dynamics": "When to use pads vs full chords vs nothing",
-    "tips": ["Voicing tip", "When to lay out", "Pedal and tone tip"]
+    "tips": ["Voicing tip","When to lay out","Pedal and tone tip"]
   }
 }`;
   }
@@ -188,45 +146,26 @@ Generate a keys/piano chart for this worship song.
     return `${base}
 Generate a ${isElectric ? 'electric' : 'acoustic'} guitar chart for this worship song.
 {
-  "title": "song title",
-  "artist": "artist name",
-  "key": "key e.g. G",
-  "bpm": 72,
-  "timeSignature": "4/4",
-  "capo": null,
+  "title": "song title","artist": "artist name","key": "key e.g. G","bpm": 72,"timeSignature": "4/4","capo": null,
   "sections": [
-    {
-      "name": "Verse",
-      "repeat": 2,
-      "lines": [
-        [{"chord": "G", "beats": 4, "function": "I"}, {"chord": "C", "beats": 4, "function": "IV"}],
-        [{"chord": "D", "beats": 4, "function": "V"}, {"chord": "G", "beats": 4, "function": "I"}]
-      ]
-    },
-    {
-      "name": "Chorus",
-      "repeat": 2,
-      "lines": [
-        [{"chord": "G", "beats": 4, "function": "I"}, {"chord": "D", "beats": 4, "function": "V"}],
-        [{"chord": "Em", "beats": 4, "function": "vi"}, {"chord": "C", "beats": 4, "function": "IV"}]
-      ]
-    }
+    {"name": "Verse","repeat": 2,"lines": [
+      [{"chord": "G","beats": 4,"function": "I"},{"chord": "C","beats": 4,"function": "IV"}],
+      [{"chord": "D","beats": 4,"function": "V"},{"chord": "G","beats": 4,"function": "I"}]
+    ]},
+    {"name": "Chorus","repeat": 2,"lines": [
+      [{"chord": "G","beats": 4,"function": "I"},{"chord": "D","beats": 4,"function": "V"}],
+      [{"chord": "Em","beats": 4,"function": "vi"},{"chord": "C","beats": 4,"function": "IV"}]
+    ]}
   ],
   "bassTab": {
-    "Verse": {
-      "G": "e|--3--|", "D": "B|--3--|", "A": "G|--0--|", "E": "D|--0--|",
-      "description": "${isElectric ? 'Clean tone, single note fills, let chords ring' : 'Down strums, gentle fingerpick pattern'}"
-    },
-    "Chorus": {
-      "G": "e|--3--|", "D": "B|--3--|", "A": "G|--0--|", "E": "D|--2--|",
-      "description": "${isElectric ? 'Light overdrive, full strums on 1, muted on 2 and 4' : 'Full strums, drive the energy'}"
-    }
+    "Verse": {"G": "e|--3--|","D": "B|--3--|","A": "G|--0--|","E": "D|--0--|","description": "${isElectric ? 'Clean tone, single note fills, let chords ring' : 'Down strums, gentle fingerpick pattern'}"},
+    "Chorus": {"G": "e|--3--|","D": "B|--3--|","A": "G|--0--|","E": "D|--2--|","description": "${isElectric ? 'Light overdrive, full strums on 1, muted on 2 and 4' : 'Full strums, drive the energy'}"}
   },
   "bassNotes": {
     "feel": "Overall guitar role and feel",
     "rootNotes": "${isElectric ? 'Tone settings and pickup suggestions' : 'Capo position if applicable and open chord shapes'}",
     "dynamics": "Strumming pattern and dynamic approach",
-    "tips": ["${isElectric ? 'Tone/effect tip' : 'Strumming pattern tip'}", "Transition tip", "When to simplify"]
+    "tips": ["${isElectric ? 'Tone/effect tip' : 'Strumming pattern tip'}","Transition tip","When to simplify"]
   }
 }`;
   }
@@ -235,52 +174,30 @@ Generate a ${isElectric ? 'electric' : 'acoustic'} guitar chart for this worship
   return `${base}
 Generate a bass guitar chart for this worship song. Sections must have lines — each line is one row of chords as they appear in the song.
 {
-  "title": "song title",
-  "artist": "artist name",
-  "key": "key e.g. G or Ab minor",
-  "bpm": 72,
-  "timeSignature": "4/4",
+  "title": "song title","artist": "artist name","key": "key e.g. G or Ab minor","bpm": 72,"timeSignature": "4/4",
   "sections": [
-    {
-      "name": "Verse",
-      "repeat": 2,
-      "lines": [
-        [{"chord": "G", "beats": 4, "function": "I"}, {"chord": "C", "beats": 4, "function": "IV"}],
-        [{"chord": "D", "beats": 4, "function": "V"}, {"chord": "G", "beats": 4, "function": "I"}]
-      ]
-    },
-    {
-      "name": "Pre-Chorus",
-      "repeat": 1,
-      "lines": [
-        [{"chord": "Em", "beats": 4, "function": "vi"}, {"chord": "C", "beats": 4, "function": "IV"}]
-      ]
-    },
-    {
-      "name": "Chorus",
-      "repeat": 2,
-      "lines": [
-        [{"chord": "G", "beats": 4, "function": "I"}, {"chord": "D", "beats": 4, "function": "V"}],
-        [{"chord": "Em", "beats": 4, "function": "vi"}, {"chord": "C", "beats": 4, "function": "IV"}]
-      ]
-    },
-    {
-      "name": "Bridge",
-      "repeat": 1,
-      "lines": [
-        [{"chord": "C", "beats": 4, "function": "IV"}, {"chord": "G", "beats": 4, "function": "I"}]
-      ]
-    }
+    {"name": "Verse","repeat": 2,"lines": [
+      [{"chord": "G","beats": 4,"function": "I"},{"chord": "C","beats": 4,"function": "IV"}],
+      [{"chord": "D","beats": 4,"function": "V"},{"chord": "G","beats": 4,"function": "I"}]
+    ]},
+    {"name": "Pre-Chorus","repeat": 1,"lines": [
+      [{"chord": "Em","beats": 4,"function": "vi"},{"chord": "C","beats": 4,"function": "IV"}]
+    ]},
+    {"name": "Chorus","repeat": 2,"lines": [
+      [{"chord": "G","beats": 4,"function": "I"},{"chord": "D","beats": 4,"function": "V"}],
+      [{"chord": "Em","beats": 4,"function": "vi"},{"chord": "C","beats": 4,"function": "IV"}]
+    ]},
+    {"name": "Bridge","repeat": 1,"lines": [
+      [{"chord": "C","beats": 4,"function": "IV"},{"chord": "G","beats": 4,"function": "I"}]
+    ]}
   ],
   "bassTab": {
     "Verse": {"G": "|-3--3-3--3--|","D": "|------------|","A": "|--0--0-0----|","E": "|------------|","description": "Root notes, quarter note feel"},
     "Chorus": {"G": "|-3--3-3--3--|","D": "|-0--0-0--0--|","A": "|------------|","E": "|------------|","description": "Drive with eighth notes"}
   },
   "bassNotes": {
-    "feel": "groove description",
-    "rootNotes": "fretboard guidance",
-    "dynamics": "dynamics guidance",
-    "tips": ["tip 1", "tip 2", "tip 3"]
+    "feel": "groove description","rootNotes": "fretboard guidance","dynamics": "dynamics guidance",
+    "tips": ["tip 1","tip 2","tip 3"]
   }
 }`;
 }
@@ -293,7 +210,7 @@ async function fetchChart(title, artist, instrumentId = 'bass') {
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1800,
-      system: `You are an expert worship musician and music director. You know bass, guitar, keys, drums, and vocals inside out. Return ONLY valid JSON. No markdown, no backticks, no explanation.`,
+      system: 'You are an expert worship musician and music director. You know bass, guitar, keys, drums, and vocals inside out. Return ONLY valid JSON. No markdown, no backticks, no explanation.',
       messages: [{ role: 'user', content: buildPrompt(title, artist, instrumentId) }]
     })
   });
@@ -346,8 +263,6 @@ const styles = `
 }
 html, body, #root { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; }
 .app { min-height: 100dvh; max-width: 640px; margin: 0 auto; padding: 0 0 90px; }
-
-/* ── Onboarding ── */
 .onboarding { position: fixed; inset: 0; z-index: 500; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; max-width: 640px; margin: 0 auto; animation: fadeIn 0.3s ease; }
 .ob-logo { width: 72px; height: 72px; background: var(--accent); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; animation: iconPop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s both; }
 .ob-logo svg { width: 38px; height: 38px; fill: #0f0f0f; }
@@ -360,12 +275,10 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .ob-card-emoji { font-size: 28px; line-height: 1; }
 .ob-card-label { font-size: 13px; font-weight: 500; color: var(--text2); text-align: center; }
 .ob-fuse { font-size: 10px; color: rgba(255,255,255,0.15); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 32px; animation: fadeUp 0.4s ease 1s both; }
-
-/* ── Instrument picker sheet ── */
 .inst-sheet-overlay { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,0.7); display: flex; align-items: flex-end; justify-content: center; animation: fadeIn 0.2s ease; }
 .inst-sheet { background: var(--bg2); border-radius: 16px 16px 0 0; border-top: 1px solid var(--border); padding: 20px 16px; padding-bottom: calc(20px + env(safe-area-inset-bottom)); width: 100%; max-width: 640px; animation: slideUp 0.25s ease; }
 .inst-sheet-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 16px; }
-.inst-sheet-title { font-size: 13px; font-weight: 600; color: var(--text2); text-align: center; margin-bottom: 16px; letter-spacing: 0.05em; text-transform: uppercase; font-size: 10px; }
+.inst-sheet-title { font-size: 10px; font-weight: 600; color: var(--text2); text-align: center; margin-bottom: 16px; letter-spacing: 0.05em; text-transform: uppercase; }
 .inst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .inst-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
 .inst-card.selected { border-width: 2px; }
@@ -373,22 +286,17 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .inst-card-emoji { font-size: 22px; line-height: 1; }
 .inst-card-label { font-size: 11px; font-weight: 500; color: var(--text2); text-align: center; line-height: 1.3; }
 .inst-card.selected .inst-card-label { color: var(--text); font-weight: 600; }
-
-/* ── Nav ── */
 .nav-bar { position: sticky; top: 0; z-index: 50; background: rgba(15,15,15,0.95); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); padding: 0 12px; display: flex; align-items: center; }
 .nav-logo { display: flex; align-items: center; gap: 7px; padding: 11px 0; margin-right: 6px; flex-shrink: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .logo-icon { width: 27px; height: 27px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
 .logo-icon svg { width: 14px; height: 14px; fill: #0f0f0f; }
 .nav-inst-badge { display: flex; align-items: center; gap: 4px; padding: 3px 7px; background: var(--bg3); border: 1px solid var(--border); border-radius: 99px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: border-color 0.15s; }
-.nav-inst-badge:hover { border-color: var(--border2); }
 .nav-inst-emoji { font-size: 12px; line-height: 1; }
 .nav-inst-label { font-size: 10px; font-weight: 500; color: var(--text2); white-space: nowrap; }
 .nav-tabs { display: flex; flex: 1; overflow-x: auto; scrollbar-width: none; margin-left: 6px; }
 .nav-tabs::-webkit-scrollbar { display: none; }
 .nav-tab { flex-shrink: 0; padding: 13px 7px; font-size: 11px; font-weight: 500; text-align: center; color: var(--text3); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: var(--font); transition: color 0.15s, border-color 0.15s; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
 .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-/* ── Search ── */
 .search-section { padding: 13px 16px 0; }
 .input-row { display: flex; gap: 7px; margin-bottom: 7px; }
 .input-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
@@ -400,13 +308,10 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .btn-primary:active { transform: scale(0.97); }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 .btn-ghost { padding: 9px 12px; background: var(--bg3); color: var(--text2); font-family: var(--font); font-size: 13px; font-weight: 500; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: border-color 0.15s, color 0.15s; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
-.btn-ghost:hover { border-color: var(--border2); color: var(--text); }
 .suggestions-row { display: flex; gap: 5px; overflow-x: auto; padding: 7px 0 10px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
 .suggestions-row::-webkit-scrollbar { display: none; }
 .chip { flex-shrink: 0; font-size: 12px; color: var(--text2); padding: 5px 11px; border: 1px solid var(--border); border-radius: 99px; cursor: pointer; white-space: nowrap; background: var(--bg2); -webkit-tap-highlight-color: transparent; }
 .chip:active { border-color: var(--accent); color: var(--accent); }
-
-/* ── Loading / error / empty ── */
 .loading-screen { padding: 50px 16px; text-align: center; }
 .loading-spinner { width: 32px; height: 32px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -417,31 +322,21 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .empty-icon { font-size: 32px; margin-bottom: 10px; }
 .empty-title { font-size: 15px; font-weight: 500; color: var(--text2); }
 .empty-sub { font-size: 13px; color: var(--text3); margin-top: 5px; line-height: 1.5; }
-
-/* ── Song card ── */
 .song-card { margin: 10px 16px 0; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; animation: slideUp 0.22s ease; }
 @keyframes slideUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform:none; } }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 @keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
 @keyframes iconPop { from { opacity:0; transform: scale(0.5); } to { opacity:1; transform: scale(1); } }
-@keyframes iconPop2 { from { opacity:0; transform: scale(0.5); } to { opacity:1; transform: scale(1); } }
 @keyframes splashFade { 0%{opacity:1;} 80%{opacity:1;} 100%{opacity:0;} }
 .song-card-header { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .song-title { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; }
 .song-artist { font-size: 12px; color: var(--text2); margin-top: 2px; }
 .song-actions { display: flex; gap: 5px; flex-shrink: 0; }
-.icon-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg3); color: var(--text2); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
-.icon-btn:active, .icon-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-
-/* ── Pills ── */
 .pills-row { padding: 8px 14px; display: flex; gap: 5px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
 .pill { font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 99px; }
 .pill-key { background: var(--accent-bg); color: var(--accent); }
 .pill-bpm { background: var(--blue-bg); color: var(--blue); }
 .pill-time { background: var(--green-bg); color: var(--green); }
-.pill-pco { background: var(--purple-bg); color: var(--purple); }
-
-/* ── Transposer ── */
 .transposer { padding: 8px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 9px; }
 .transposer-label { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); }
 .transpose-btns { display: flex; gap: 4px; }
@@ -449,8 +344,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .t-btn:active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
 .t-current { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent); min-width: 52px; text-align: center; }
 .t-reset { font-size: 11px; color: var(--text3); padding: 3px 8px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; background: none; font-family: var(--font); }
-
-/* ── Chart content ── */
 .tab-nav { display: flex; border-bottom: 1px solid var(--border); }
 .tab-nav-btn { flex: 1; padding: 10px 4px; font-size: 12px; font-weight: 500; color: var(--text3); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: var(--font); transition: color 0.15s, border-color 0.15s; -webkit-tap-highlight-color: transparent; }
 .tab-nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
@@ -468,17 +361,12 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .chord-beats { font-size: 10px; color: var(--text3); margin-top: 3px; }
 .chord-func { font-size: 11px; font-weight: 700; color: var(--accent); margin-top: 3px; font-family: var(--mono); background: var(--accent-bg); padding: 1px 5px; border-radius: 3px; }
 .chord-lyric { font-size: 10px; color: var(--text2); margin-top: 3px; font-style: italic; text-align: center; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* Drum map */
 .drum-section-block { margin-bottom: 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 13px; }
 .drum-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .drum-section-name { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); }
-.drum-section-meta { display: flex; gap: 6px; }
 .drum-pill { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 99px; background: var(--accent-bg); color: var(--accent); }
 .drum-feel { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 4px; }
 .drum-notes { font-size: 12px; color: var(--text3); line-height: 1.4; font-style: italic; }
-
-/* Tab / voicings */
 .tab-section-block { margin-bottom: 16px; }
 .tab-section-name { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
 .tab-staff { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -492,16 +380,12 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .voicing-label { color: var(--text3); font-size: 11px; min-width: 72px; }
 .voicing-val { color: var(--text); }
 .voicing-desc { font-size: 12px; color: var(--text3); font-style: italic; margin-top: 6px; }
-
-/* Player notes */
 .notes-section { margin-bottom: 14px; }
 .notes-heading { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
 .notes-body { font-size: 14px; color: var(--text2); line-height: 1.65; }
 .tip-list { list-style: none; }
 .tip-list li { font-size: 14px; color: var(--text2); line-height: 1.65; padding-left: 16px; position: relative; margin-bottom: 3px; }
 .tip-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 12px; }
-
-/* ── Transport ── */
 .transport { position: fixed; bottom: 0; z-index: 40; left: 50%; transform: translateX(-50%); width: 100%; max-width: 640px; background: rgba(15,15,15,0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--border); padding: 9px 16px; padding-bottom: calc(9px + env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 9px; }
 .transport-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg3); color: var(--text); font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; flex-shrink: 0; -webkit-tap-highlight-color: transparent; }
 .transport-btn.play-btn { background: var(--accent); border-color: var(--accent); color: #0f0f0f; font-size: 15px; }
@@ -514,8 +398,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .bpm-slider { width: 100%; height: 3px; border-radius: 2px; -webkit-appearance: none; appearance: none; background: var(--bg3); outline: none; cursor: pointer; }
 .bpm-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%; background: var(--accent); cursor: pointer; border: none; }
 .playhead-display { font-family: var(--mono); font-size: 10px; color: var(--text3); text-align: right; flex-shrink: 0; min-width: 56px; }
-
-/* ── Library ── */
 .library-view { padding: 14px 16px; }
 .library-label { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
 .library-empty { text-align: center; padding: 40px 0; color: var(--text3); font-size: 14px; line-height: 1.6; }
@@ -528,8 +410,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .library-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
 .lib-btn { padding: 5px 10px; font-size: 11px; font-weight: 500; font-family: var(--font); border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg3); color: var(--text2); cursor: pointer; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
 .lib-btn:active { border-color: var(--accent); color: var(--accent); }
-
-/* ── Setlist ── */
 .setlist-view { padding: 14px 16px; }
 .setlist-name-input { font-size: 17px; font-weight: 600; color: var(--text); background: none; border: none; border-bottom: 1px solid var(--border); outline: none; font-family: var(--font); padding: 2px 0; width: 100%; transition: border-color 0.15s; }
 .setlist-name-input:focus { border-bottom-color: var(--accent); }
@@ -572,8 +452,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .saved-item-name { font-size: 14px; font-weight: 500; color: var(--text); }
 .saved-item-meta { font-size: 12px; color: var(--text3); margin-top: 2px; }
 .saved-item-del { color: var(--text3); font-size: 18px; padding: 2px 6px; border: none; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-
-/* ── PCO / Services ── */
 .pco-view { padding: 14px 16px; }
 .pco-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .pco-title { font-size: 15px; font-weight: 600; color: var(--text); }
@@ -581,7 +459,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .sync-btn { display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--purple-bg); color: var(--purple); font-family: var(--font); font-size: 13px; font-weight: 600; border: 1px solid var(--purple); border-radius: var(--radius-sm); cursor: pointer; -webkit-tap-highlight-color: transparent; white-space: nowrap; }
 .sync-icon { font-size: 14px; }
 .sync-icon.spinning { animation: spin 1s linear infinite; display: inline-block; }
-.pco-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; margin-top: 16px; }
 .service-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; cursor: pointer; transition: border-color 0.15s; -webkit-tap-highlight-color: transparent; }
 .service-card.expanded { border-color: var(--purple); }
 .service-card-header { padding: 13px 14px; display: flex; align-items: center; gap: 12px; }
@@ -616,8 +493,6 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .pdf-frame { width: 100%; height: 100%; border: none; border-radius: var(--radius-sm); background: white; }
 .pdf-loading { text-align: center; color: var(--text2); font-size: 14px; }
 .pdf-open-btn { margin-top: 14px; padding: 11px 20px; background: var(--purple); color: #0f0f0f; font-family: var(--font); font-size: 14px; font-weight: 600; border: none; border-radius: var(--radius-sm); cursor: pointer; -webkit-tap-highlight-color: transparent; }
-
-/* ── Stage mode ── */
 .stage-overlay { position: fixed; inset: 0; z-index: 200; background: var(--bg); display: flex; flex-direction: column; max-width: 640px; margin: 0 auto; }
 .stage-topbar { background: rgba(15,15,15,0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .stage-setlist-name { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); }
@@ -647,13 +522,12 @@ html, body, #root { height: 100%; background: var(--bg); color: var(--text); fon
 .snav-btn:active { background: var(--bg4); }
 .snav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
 .snav-btn.next { background: var(--accent); border-color: var(--accent); color: #0f0f0f; font-weight: 700; flex: 1; }
-.snav-btn.next:active { opacity: 0.85; }
 .stage-cur { text-align: center; flex: 0; min-width: 0; }
 .stage-cur-title { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
 .stage-cur-key { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 1px; }
 `;
 
-// ── Shared chart content renderer ────────────────────────────────────────────
+// ── Chart Content ────────────────────────────────────────────────────────────
 function ChartContent({ data, transpose, onTransposeChange, showTransport, instrument }) {
   const inst = instrument || getInstrument(data?.instrumentId || 'bass');
   const [activeTab, setActiveTab] = useState('chart');
@@ -695,8 +569,6 @@ function ChartContent({ data, transpose, onTransposeChange, showTransport, instr
   const isDrums = inst.id === 'drums';
   const isVocals = inst.id === 'vocals';
   const isKeys = inst.id === 'keys';
-
-  // Tab labels
   const tabLabel = inst.tabLabel || 'Tab';
   const showTab = !isDrums && !isVocals;
 
@@ -718,52 +590,33 @@ function ChartContent({ data, transpose, onTransposeChange, showTransport, instr
         <span className="t-current">{tKey}</span>
         {transpose !== 0 && <button className="t-reset" onClick={() => onTransposeChange(0)}>reset</button>}
       </div>
-
       <div className="tab-nav">
-        <button className={`tab-nav-btn${activeTab==='chart'?' active':''}`} onClick={() => setActiveTab('chart')}>
-          {isDrums ? 'Song Map' : 'Chord Chart'}
-        </button>
+        <button className={`tab-nav-btn${activeTab==='chart'?' active':''}`} onClick={() => setActiveTab('chart')}>{isDrums ? 'Song Map' : 'Chord Chart'}</button>
         {showTab && <button className={`tab-nav-btn${activeTab==='tab'?' active':''}`} onClick={() => setActiveTab('tab')}>{tabLabel}</button>}
         <button className={`tab-nav-btn${activeTab==='notes'?' active':''}`} onClick={() => setActiveTab('notes')}>Player Notes</button>
       </div>
-
       <div className="tab-content">
-        {/* Chord Chart / Song Map */}
         {activeTab === 'chart' && (
           isDrums ? (
-            // Drum map
             <div>
               {data.sections?.map(sec => {
                 const dm = data.drumMap?.[sec.name];
                 return (
                   <div key={sec.name} className="drum-section-block">
                     <div className="drum-section-header">
-                      <div className="drum-section-name">
-                        {sec.name}
-                        {sec.repeat > 1 && <span className="section-repeat" style={{ marginLeft:6 }}>x{sec.repeat}</span>}
-                        {sec.bars && <span style={{ fontSize:10, color:'var(--text3)', marginLeft:8, fontFamily:'var(--mono)' }}>{sec.bars} bars</span>}
-                      </div>
+                      <div className="drum-section-name">{sec.name}{sec.repeat > 1 && <span className="section-repeat" style={{ marginLeft:6 }}>x{sec.repeat}</span>}{sec.bars && <span style={{ fontSize:10, color:'var(--text3)', marginLeft:8, fontFamily:'var(--mono)' }}>{sec.bars} bars</span>}</div>
                       {dm?.dynamics && <span className="drum-pill">{dm.dynamics}</span>}
                     </div>
-                    {dm && (
-                      <>
-                        <div className="drum-feel">{dm.feel}</div>
-                        {dm.notes && <div className="drum-notes">{dm.notes}</div>}
-                      </>
-                    )}
+                    {dm && (<><div className="drum-feel">{dm.feel}</div>{dm.notes && <div className="drum-notes">{dm.notes}</div>}</>)}
                   </div>
                 );
               })}
             </div>
           ) : (
-            // Standard chord chart
             <div>
               {data.sections?.map(sec => (
                 <div key={sec.name} className="section-block">
-                  <div className="section-name">
-                    {sec.name}
-                    {sec.repeat > 1 && <span className="section-repeat">x{sec.repeat}</span>}
-                  </div>
+                  <div className="section-name">{sec.name}{sec.repeat > 1 && <span className="section-repeat">x{sec.repeat}</span>}</div>
                   {sec.lines ? sec.lines.map((line, li) => (
                     <div key={li} className="chord-line">
                       {line.map((c, i) => {
@@ -797,44 +650,36 @@ function ChartContent({ data, transpose, onTransposeChange, showTransport, instr
             </div>
           )
         )}
-
-        {/* Tab / Voicings */}
         {activeTab === 'tab' && showTab && (
           isKeys ? (
-            // Keys voicings
-            !data.bassTab
-              ? <div style={{ color:'var(--text3)', fontSize:14 }}>No voicing data available.</div>
-              : Object.entries(data.bassTab).map(([sn, d]) => (
-                <div key={sn} className="voicing-block">
-                  <div className="voicing-section">{sn}</div>
-                  {d.voicing && <div className="voicing-row"><span className="voicing-label">Voicing</span><span className="voicing-val">{d.voicing}</span></div>}
-                  {d.leftHand && <div className="voicing-row"><span className="voicing-label">Left hand</span><span className="voicing-val">{d.leftHand}</span></div>}
-                  {d.rightHand && <div className="voicing-row"><span className="voicing-label">Right hand</span><span className="voicing-val">{d.rightHand}</span></div>}
-                  {d.description && <div className="voicing-desc">{d.description}</div>}
-                </div>
-              ))
+            !data.bassTab ? <div style={{ color:'var(--text3)', fontSize:14 }}>No voicing data available.</div> :
+            Object.entries(data.bassTab).map(([sn, d]) => (
+              <div key={sn} className="voicing-block">
+                <div className="voicing-section">{sn}</div>
+                {d.voicing && <div className="voicing-row"><span className="voicing-label">Voicing</span><span className="voicing-val">{d.voicing}</span></div>}
+                {d.leftHand && <div className="voicing-row"><span className="voicing-label">Left hand</span><span className="voicing-val">{d.leftHand}</span></div>}
+                {d.rightHand && <div className="voicing-row"><span className="voicing-label">Right hand</span><span className="voicing-val">{d.rightHand}</span></div>}
+                {d.description && <div className="voicing-desc">{d.description}</div>}
+              </div>
+            ))
           ) : (
-            // Bass / guitar tab
-            !data.bassTab
-              ? <div style={{ color:'var(--text3)', fontSize:14 }}>No tab available.</div>
-              : Object.entries(data.bassTab).map(([sn, d]) => (
-                <div key={sn} className="tab-section-block">
-                  <div className="tab-section-name">{sn}</div>
-                  <div className="tab-staff">
-                    {['G','D','A','E'].map(s => (
-                      <div key={s} className="tab-row">
-                        <span className="string-label">{s}</span>
-                        <span className="string-notes">{d[s] || '|------------|'}</span>
-                      </div>
-                    ))}
-                    {d.description && <div className="tab-desc">{d.description}</div>}
-                  </div>
+            !data.bassTab ? <div style={{ color:'var(--text3)', fontSize:14 }}>No tab available.</div> :
+            Object.entries(data.bassTab).map(([sn, d]) => (
+              <div key={sn} className="tab-section-block">
+                <div className="tab-section-name">{sn}</div>
+                <div className="tab-staff">
+                  {['G','D','A','E'].map(s => (
+                    <div key={s} className="tab-row">
+                      <span className="string-label">{s}</span>
+                      <span className="string-notes">{d[s] || '|------------|'}</span>
+                    </div>
+                  ))}
+                  {d.description && <div className="tab-desc">{d.description}</div>}
                 </div>
-              ))
+              </div>
+            ))
           )
         )}
-
-        {/* Player Notes */}
         {activeTab === 'notes' && data.bassNotes && (
           <>
             {data.bassNotes.feel && <div className="notes-section"><div className="notes-heading">Feel & groove</div><div className="notes-body">{data.bassNotes.feel}</div></div>}
@@ -844,16 +689,12 @@ function ChartContent({ data, transpose, onTransposeChange, showTransport, instr
           </>
         )}
       </div>
-
       {showTransport && !isDrums && (
         <div className="transport">
           <button className="transport-btn play-btn" onClick={() => setIsPlaying(p => !p)}>{isPlaying ? '⏸' : '▶'}</button>
           <button className="transport-btn" onClick={() => { setIsPlaying(false); setCurIdx(0); }}>↺</button>
           <div className="bpm-group">
-            <div className="bpm-row">
-              <span className="bpm-label">Tempo</span>
-              <span className="bpm-number">♩ {bpm}</span>
-            </div>
+            <div className="bpm-row"><span className="bpm-label">Tempo</span><span className="bpm-number">♩ {bpm}</span></div>
             <input type="range" min="40" max="200" step="1" value={bpm} className="bpm-slider" onChange={e => setBpm(parseInt(e.target.value))} />
           </div>
           {isPlaying && cur && (
@@ -868,7 +709,7 @@ function ChartContent({ data, transpose, onTransposeChange, showTransport, instr
   );
 }
 
-// ── Instrument picker sheet ───────────────────────────────────────────────────
+// ── Instrument Picker ────────────────────────────────────────────────────────
 function InstrumentPicker({ current, onSelect, onClose }) {
   return (
     <div className="inst-sheet-overlay" onClick={onClose}>
@@ -877,12 +718,9 @@ function InstrumentPicker({ current, onSelect, onClose }) {
         <div className="inst-sheet-title">Switch instrument</div>
         <div className="inst-grid">
           {INSTRUMENTS.map(inst => (
-            <div
-              key={inst.id}
-              className={`inst-card${current === inst.id ? ' selected' : ''}`}
+            <div key={inst.id} className={`inst-card${current === inst.id ? ' selected' : ''}`}
               style={current === inst.id ? { borderColor: inst.color, background: `${inst.color}18` } : {}}
-              onClick={() => { onSelect(inst.id); onClose(); }}
-            >
+              onClick={() => { onSelect(inst.id); onClose(); }}>
               <span className="inst-card-emoji">{inst.emoji}</span>
               <span className="inst-card-label">{inst.label}</span>
             </div>
@@ -893,7 +731,7 @@ function InstrumentPicker({ current, onSelect, onClose }) {
   );
 }
 
-// ── Onboarding screen ────────────────────────────────────────────────────────
+// ── Onboarding ───────────────────────────────────────────────────────────────
 function Onboarding({ onSelect }) {
   return (
     <div className="onboarding">
@@ -905,12 +743,7 @@ function Onboarding({ onSelect }) {
       <div className="ob-question">What do you play?</div>
       <div className="ob-grid">
         {INSTRUMENTS.map(inst => (
-          <div
-            key={inst.id}
-            className="ob-card"
-            style={{ '--inst-color': inst.color }}
-            onClick={() => onSelect(inst.id)}
-          >
+          <div key={inst.id} className="ob-card" onClick={() => onSelect(inst.id)}>
             <span className="ob-card-emoji">{inst.emoji}</span>
             <span className="ob-card-label">{inst.label}</span>
           </div>
@@ -935,6 +768,7 @@ function StageMode({ setlistName, songs, instrument, onExit }) {
   const cur = songs[idx];
   const st = tps[idx] || 0;
   const tKey = cur?.data ? transposeKey(cur.data.key || '', st) : '';
+  const isDrums = inst.id === 'drums';
 
   function goTo(i) { if (i >= 0 && i < total) { setIdx(i); setDragX(0); } }
   function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; isDragging.current = true; }
@@ -951,7 +785,6 @@ function StageMode({ setlistName, songs, instrument, onExit }) {
     transition: isDragging.current ? 'none' : 'transform 0.28s cubic-bezier(0.25,0.46,0.45,0.94)',
   };
   const tc = (chord, si) => transposeChord(chord, tps[si] || 0);
-  const isDrums = inst.id === 'drums';
 
   return (
     <div className="stage-overlay">
@@ -997,13 +830,10 @@ function StageMode({ setlistName, songs, instrument, onExit }) {
                       {s !== 0 && <button className="stage-t-reset" onClick={() => setTps(p => { const n=[...p]; n[si]=0; return n; })}>reset</button>}
                     </div>
                     <div className="stage-tabs">
-                      <button className={`stage-tab${sTab==='chart'?' active':''}`} onClick={() => setTabs(p => { const n=[...p]; n[si]='chart'; return n; })}>
-                        {isDrums ? 'Map' : 'Chords'}
-                      </button>
+                      <button className={`stage-tab${sTab==='chart'?' active':''}`} onClick={() => setTabs(p => { const n=[...p]; n[si]='chart'; return n; })}>{isDrums ? 'Map' : 'Chords'}</button>
                       {showTab && <button className={`stage-tab${sTab==='tab'?' active':''}`} onClick={() => setTabs(p => { const n=[...p]; n[si]='tab'; return n; })}>{inst.tabLabel}</button>}
                       <button className={`stage-tab${sTab==='notes'?' active':''}`} onClick={() => setTabs(p => { const n=[...p]; n[si]='notes'; return n; })}>Notes</button>
                     </div>
-
                     {sTab === 'chart' && (
                       isDrums ? (
                         song.data.sections?.map(sec => {
@@ -1047,7 +877,6 @@ function StageMode({ setlistName, songs, instrument, onExit }) {
                         ))
                       )
                     )}
-
                     {sTab === 'tab' && showTab && (
                       inst.id === 'keys' ? (
                         !song.data.bassTab ? <div style={{ color:'var(--text3)', fontSize:14 }}>No voicing data.</div> :
@@ -1073,7 +902,6 @@ function StageMode({ setlistName, songs, instrument, onExit }) {
                         ))
                       )
                     )}
-
                     {sTab === 'notes' && song.data.bassNotes && (
                       <>
                         {song.data.bassNotes.feel && <div className="notes-section"><div className="notes-heading">Feel & groove</div><div className="notes-body">{song.data.bassNotes.feel}</div></div>}
@@ -1130,8 +958,8 @@ function PDFViewer({ song, url, onClose }) {
   );
 }
 
-// ── Services (Planning Center) view ─────────────────────────────────────────
-function ServicesView({ onAddToSetlist, instrument }) {
+// ── Services View ────────────────────────────────────────────────────────────
+function ServicesView({ onAddToSetlist }) {
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState('');
   const [myPlans, setMyPlans] = useState([]);
@@ -1153,12 +981,13 @@ function ServicesView({ onAddToSetlist, instrument }) {
         if (future.length > 0) {
           setMyPlans(future);
           setHasLoaded(true);
-          // Update storage with expired ones removed
-          localStorage.setItem('selah-synced-plans', JSON.stringify({ plans: future, syncedAt: Date.now() }));
+          try { localStorage.setItem('selah-synced-plans', JSON.stringify({ plans: future, syncedAt: Date.now() })); } catch {}
         }
       }
     } catch {}
-  }, []);  async function syncPlans() {
+  }, []);
+
+  async function syncPlans() {
     setSyncing(true); setError('');
     try {
       const data = await pcoGet('myPlans');
@@ -1178,7 +1007,6 @@ function ServicesView({ onAddToSetlist, instrument }) {
         enriched.push({ id: planRel.id, serviceTypeId: st?.id || stRel?.id, serviceName: st?.attributes?.name || 'Service', date: plan?.attributes?.sort_date, title: plan?.attributes?.title || '' });
       });
       enriched.sort((a, b) => new Date(a.date) - new Date(b.date));
-      // Persist to localStorage
       try { localStorage.setItem('selah-synced-plans', JSON.stringify({ plans: enriched, syncedAt: Date.now() })); } catch {}
       setMyPlans(enriched);
       setHasLoaded(true);
@@ -1186,6 +1014,7 @@ function ServicesView({ onAddToSetlist, instrument }) {
       setError('Could not connect to Planning Center. ' + e.message);
     } finally { setSyncing(false); }
   }
+
   async function loadPlanSongs(plan) {
     const key = plan.id;
     if (planSongs[key] || loadingSongs[key]) return;
@@ -1213,26 +1042,17 @@ function ServicesView({ onAddToSetlist, instrument }) {
     setPdfViewer({ song, url: null });
     try {
       const data = await pcoGet('attachments', { serviceTypeId: song.serviceTypeId, planId: song.planId });
-
-      // Combine plan-level and item-level attachments into one pool
       const allAttachments = [
         ...(data.planAttachments || data.data || []),
         ...(data.itemAttachments || []),
       ];
-
-      // Helper — is this a PDF?
-      const isPDF = a => (a.attributes?.filename || a.attributes?.description || '').toLowerCase().endsWith('.pdf')
-        || a.attributes?.content_type === 'application/pdf';
-
-      // 1. Try to match by song title in the filename
+      const isPDF = a => (a.attributes?.filename || a.attributes?.description || '').toLowerCase().endsWith('.pdf') || a.attributes?.content_type === 'application/pdf';
       const titleWords = song.title.toLowerCase().split(' ').filter(w => w.length > 2);
       let pdf = allAttachments.find(a => {
         if (!isPDF(a)) return false;
         const fn = (a.attributes?.filename || '').toLowerCase();
         return titleWords.some(w => fn.includes(w));
       });
-
-      // 2. Fall back — any PDF linked to this song ID
       if (!pdf) {
         pdf = allAttachments.find(a => {
           if (!isPDF(a)) return false;
@@ -1240,18 +1060,9 @@ function ServicesView({ onAddToSetlist, instrument }) {
           return linked?.id === song.songId;
         });
       }
-
-      // 3. Last resort — first PDF in the plan
-      if (!pdf) {
-        pdf = allAttachments.find(a => isPDF(a));
-      }
-
+      if (!pdf) pdf = allAttachments.find(a => isPDF(a));
       if (pdf) {
-        const urlData = await pcoGet('attachmentUrl', {
-          serviceTypeId: song.serviceTypeId,
-          planId: song.planId,
-          attachmentId: pdf.id,
-        });
+        const urlData = await pcoGet('attachmentUrl', { serviceTypeId: song.serviceTypeId, planId: song.planId, attachmentId: pdf.id });
         const url = urlData.data?.attributes?.open_url || pdf.attributes?.file_download_url;
         setPdfViewer({ song, url });
       } else {
@@ -1262,12 +1073,13 @@ function ServicesView({ onAddToSetlist, instrument }) {
       setPdfViewer({ song, url: 'error' });
     }
   }
+
   function togglePlan(plan) {
     if (expandedPlan === plan.id) { setExpandedPlan(null); } else { setExpandedPlan(plan.id); loadPlanSongs(plan); }
   }
 
   const getDateParts = (dateStr) => {
-    if (!dateStr) return { day: '?', month: '???' };
+    if (!dateStr) return { day: '?', month: '???', full: '' };
     const d = new Date(dateStr);
     return { day: d.getDate(), month: d.toLocaleString('en-US', { month: 'short' }).toUpperCase(), full: formatDate(dateStr) };
   };
@@ -1331,14 +1143,18 @@ function ServicesView({ onAddToSetlist, instrument }) {
                     </div>
                     <div className="pco-song-actions">
                       <button className="pco-btn pdf" onClick={() => openPDF(song)}>📄 Chart</button>
-                      <button className="pco-btn" onClick={() => onAddToSetlist(song)}>+ List</button>
+                      <button className="pco-btn" onClick={() => onAddToSetlist(song, plan.serviceName + ' · ' + dp.full)}>+ List</button>
                     </div>
                   </div>
                 ))}
                 {songs.length > 0 && (
-  <button className="import-all-btn" onClick={() => songs.forEach(s => onAddToSetlist(s, plan.serviceName + ' · ' + dp.full))}>Import all {songs.length} songs → Setlist</button>
-)}
+                  <button className="import-all-btn" onClick={() => songs.forEach(s => onAddToSetlist(s, plan.serviceName + ' · ' + dp.full))}>
+                    Import all {songs.length} songs to Setlist
+                  </button>
+                )}
               </div>
+            )}
+          </div>
         );
       })}
       {pdfViewer && <PDFViewer song={pdfViewer.song} url={pdfViewer.url} onClose={() => setPdfViewer(null)} />}
@@ -1348,47 +1164,23 @@ function ServicesView({ onAddToSetlist, instrument }) {
 
 // ── Main App ─────────────────────────────────────────────────────────────────
 export default function App() {
-  // Instrument
-  const [instrument, setInstrument] = useState(() => {
-    try { return localStorage.getItem('selah-instrument') || null; } catch { return null; }
-  });
+  const [instrument, setInstrument] = useState(() => { try { return localStorage.getItem('selah-instrument') || null; } catch { return null; } });
   const [showInstPicker, setShowInstPicker] = useState(false);
-
-  // Splash
   const [showSplash, setShowSplash] = useState(true);
-  useEffect(() => { const t = setTimeout(() => setShowSplash(false), 2400); return () => clearTimeout(t); }, []);
-
-  // Nav
   const [view, setView] = useState('services');
-
-  // Search
   const [songTitle, setSongTitle] = useState('');
   const [songArtist, setSongArtist] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [songData, setSongData] = useState(null);
   const [transpose, setTranspose] = useState(0);
-
-  // Library
-  const [library, setLibrary] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('bass-library') || '[]'); } catch { return []; }
-  });
-
-  // Setlist
-  const [setlistName, setSetlistName] = useState(() => {
-    try { return localStorage.getItem('bass-active-setlist-name') || 'Sunday Service'; } catch { return 'Sunday Service'; }
-  });
+  const [library, setLibrary] = useState(() => { try { return JSON.parse(localStorage.getItem('bass-library') || '[]'); } catch { return []; } });
+  const [setlistName, setSetlistName] = useState(() => { try { return localStorage.getItem('bass-active-setlist-name') || 'Sunday Service'; } catch { return 'Sunday Service'; } });
   const [addTitle, setAddTitle] = useState('');
   const [addArtist, setAddArtist] = useState('');
-  const [setlistSongs, setSetlistSongs] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('bass-active-setlist') || '[]'); } catch { return []; }
-  });
-  const [savedSetlists, setSavedSetlists] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('bass-setlists') || '[]'); } catch { return []; }
-  });
+  const [setlistSongs, setSetlistSongs] = useState(() => { try { return JSON.parse(localStorage.getItem('bass-active-setlist') || '[]'); } catch { return []; } });
+  const [savedSetlists, setSavedSetlists] = useState(() => { try { return JSON.parse(localStorage.getItem('bass-setlists') || '[]'); } catch { return []; } });
   const [stageOpen, setStageOpen] = useState(false);
-
-  // Drag reorder
   const dragIdx = useRef(null);
   const dragOverIdx = useRef(null);
   const [draggingIdx, setDraggingIdx] = useState(null);
@@ -1399,7 +1191,7 @@ export default function App() {
   const [touchDragActive, setTouchDragActive] = useState(false);
   const [touchOverIdx, setTouchOverIdx] = useState(null);
 
-  // Persist
+  useEffect(() => { const t = setTimeout(() => setShowSplash(false), 2400); return () => clearTimeout(t); }, []);
   useEffect(() => { try { localStorage.setItem('selah-instrument', instrument || ''); } catch {} }, [instrument]);
   useEffect(() => { try { localStorage.setItem('bass-library', JSON.stringify(library)); } catch {} }, [library]);
   useEffect(() => { try { localStorage.setItem('bass-setlists', JSON.stringify(savedSetlists)); } catch {} }, [savedSetlists]);
@@ -1409,26 +1201,18 @@ export default function App() {
   const inst = getInstrument(instrument || 'bass');
   const isInLibrary = songData ? library.some(s => s.title === songData.title && s.artist === songData.artist) : false;
 
-  function selectInstrument(id) {
-    setInstrument(id);
-    setSongData(null);
-  }
+  function selectInstrument(id) { setInstrument(id); setSongData(null); }
 
   async function doSearch(title, artist) {
     if (!title.trim()) return;
     setLoading(true); setError(''); setSongData(null); setTranspose(0);
     try { setSongData(await fetchChart(title, artist, instrument || 'bass')); }
-    catch { setError('Couldn\'t load that song. Try being more specific or check your connection.'); }
+    catch { setError("Couldn't load that song. Try being more specific or check your connection."); }
     finally { setLoading(false); }
   }
 
   function quickSearch(s) { setSongTitle(s.title); setSongArtist(s.artist); doSearch(s.title, s.artist); }
-
-  function saveToLibrary() {
-    if (!songData || isInLibrary) return;
-    setLibrary(p => [{ ...songData, savedAt: Date.now() }, ...p]);
-  }
-
+  function saveToLibrary() { if (!songData || isInLibrary) return; setLibrary(p => [{ ...songData, savedAt: Date.now() }, ...p]); }
   function removeFromLibrary(title, artist) { setLibrary(p => p.filter(s => !(s.title === title && s.artist === artist))); }
   function loadFromLibrary(song) { setSongData(song); setTranspose(0); setView('search'); }
   function addToSetlistFromLibrary(song) {
@@ -1443,7 +1227,9 @@ export default function App() {
       return [...p, { title: pcoSong.title, artist: pcoSong.artist || '', status: 'pending', data: null, pcoKey: pcoSong.key || '', planName: planName || '' }];
     });
     setView('setlist');
-  }  function addToSetlist() {
+  }
+
+  function addToSetlist() {
     if (!addTitle.trim()) return;
     setSetlistSongs(p => [...p, { title: addTitle.trim(), artist: addArtist.trim(), status: 'pending', data: null }]);
     setAddTitle(''); setAddArtist('');
@@ -1483,7 +1269,6 @@ export default function App() {
     setSetlistSongs([]); setView('setlist');
   }
 
-  // Desktop drag
   function onDragStart(i) { dragIdx.current = i; setDraggingIdx(i); }
   function onDragOver(e, i) { e.preventDefault(); dragOverIdx.current = i; setDragOverVisual(i); }
   function onDragEnd() { setDraggingIdx(null); setDragOverVisual(null); }
@@ -1493,7 +1278,6 @@ export default function App() {
     dragIdx.current = null; dragOverIdx.current = null; setDraggingIdx(null); setDragOverVisual(null);
   }
 
-  // Touch drag
   function onTouchHandleStart(e, i) { e.preventDefault(); touchDragIdx.current = i; touchStartY.current = e.touches[0].clientY; setTouchDragActive(true); setTouchOverIdx(i); }
   function onTouchHandleMove(e) {
     if (touchDragIdx.current === null) return; e.preventDefault();
@@ -1512,21 +1296,14 @@ export default function App() {
   const anyLoading = setlistSongs.some(s => s.status === 'loading');
   const loadedCount = setlistSongs.filter(s => s.status === 'loaded').length;
 
-  // Show onboarding if no instrument selected
   if (!instrument && !showSplash) {
-    return (
-      <>
-        <style>{styles}</style>
-        <Onboarding onSelect={selectInstrument} />
-      </>
-    );
+    return (<><style>{styles}</style><Onboarding onSelect={selectInstrument} /></>);
   }
 
   return (
     <>
       <style>{styles}</style>
 
-      {/* Splash */}
       {showSplash && (
         <div style={{ position:'fixed', inset:0, background:'#0C0B0A', zIndex:9999, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:14, animation:'splashFade 2.4s ease forwards', fontFamily:"'Sora',sans-serif" }}>
           <div style={{ width:68, height:68, background:'#e8c170', borderRadius:18, display:'flex', alignItems:'center', justifyContent:'center', animation:'iconPop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s both' }}>
@@ -1537,14 +1314,10 @@ export default function App() {
         </div>
       )}
 
-      {/* Instrument picker sheet */}
       {showInstPicker && <InstrumentPicker current={instrument} onSelect={selectInstrument} onClose={() => setShowInstPicker(false)} />}
-
-      {/* Stage mode */}
       {stageOpen && <StageMode setlistName={setlistName} songs={setlistSongs} instrument={instrument} onExit={() => setStageOpen(false)} />}
 
       <div className="app">
-        {/* Nav */}
         <div className="nav-bar">
           <div className="nav-logo" onClick={() => setShowInstPicker(true)}>
             <div className="logo-icon">
@@ -1563,10 +1336,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* Services */}
         {view === 'services' && <ServicesView onAddToSetlist={addToSetlistFromPCO} instrument={instrument} />}
 
-        {/* Search */}
         {view === 'search' && (
           <>
             <div className="search-section">
@@ -1598,9 +1369,7 @@ export default function App() {
               <div className="song-card">
                 <div className="song-card-header">
                   <div><div className="song-title">{songData.title}</div><div className="song-artist">{songData.artist}</div></div>
-                  <div className="song-actions">
-                    <div style={{ fontSize:18 }}>{inst.emoji}</div>
-                  </div>
+                  <div className="song-actions"><div style={{ fontSize:18 }}>{inst.emoji}</div></div>
                 </div>
                 <ChartContent data={songData} transpose={transpose} onTransposeChange={setTranspose} showTransport={true} instrument={inst} />
               </div>
@@ -1615,7 +1384,6 @@ export default function App() {
           </>
         )}
 
-        {/* Library */}
         {view === 'library' && (
           <div className="library-view">
             <div className="library-label">My song library ({library.length})</div>
@@ -1641,7 +1409,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Setlist */}
         {view === 'setlist' && (
           <div className="setlist-view">
             <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:14 }}>
@@ -1720,7 +1487,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Footer */}
         <div style={{ borderTop:'1px solid rgba(255,255,255,0.06)', padding:'12px 16px', display:'flex', alignItems:'center', justifyContent:'center', gap:7 }}>
           <div style={{ width:16, height:16, background:'#1a1a1a', border:'1px solid rgba(255,255,255,0.12)', borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
             <svg width="10" height="10" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 3a1 1 0 0 1 1 1v6.17A3 3 0 1 1 9 16V7a1 1 0 0 1 1-1h2zm-2 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0z"/></svg>
