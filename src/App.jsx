@@ -1041,30 +1041,49 @@ function ServicesView({ onAddToSetlist }) {
   async function openPDF(song) {
     setPdfViewer({ song, url: null });
     try {
-      const data = await pcoGet('attachments', { serviceTypeId: song.serviceTypeId, planId: song.planId });
+      const data = await pcoGet('attachments', {
+        serviceTypeId: song.serviceTypeId,
+        planId: song.planId,
+        planItemId: song.itemId || '',
+        songId: song.songId || '',
+        arrangementId: song.arrangementId || ''
+      });
+
       const allAttachments = [
         ...(data.planAttachments || data.data || []),
         ...(data.itemAttachments || []),
+        ...(data.songAttachments || []),
+        ...(data.arrangementAttachments || []),
       ];
-      const isPDF = a => (a.attributes?.filename || a.attributes?.description || '').toLowerCase().endsWith('.pdf') || a.attributes?.content_type === 'application/pdf';
-      const titleWords = song.title.toLowerCase().split(' ').filter(w => w.length > 2);
+
+      const isPDF = a => {
+        const fn = (a.attributes?.filename || '').toLowerCase();
+        const ct = (a.attributes?.content_type || '').toLowerCase();
+        return fn.endsWith('.pdf') || ct === 'application/pdf';
+      };
+
+      // Try to match by any word from the song title in the filename
+      const titleWords = song.title.toLowerCase().split(/\s+/).filter(w => w.length > 1);
       let pdf = allAttachments.find(a => {
         if (!isPDF(a)) return false;
         const fn = (a.attributes?.filename || '').toLowerCase();
         return titleWords.some(w => fn.includes(w));
       });
-      if (!pdf) {
-        pdf = allAttachments.find(a => {
-          if (!isPDF(a)) return false;
-          const linked = a.relationships?.attachable?.data;
-          return linked?.id === song.songId;
-        });
-      }
+
+      // Fall back — any PDF at all
       if (!pdf) pdf = allAttachments.find(a => isPDF(a));
+
       if (pdf) {
-        const urlData = await pcoGet('attachmentUrl', { serviceTypeId: song.serviceTypeId, planId: song.planId, attachmentId: pdf.id });
-        const url = urlData.data?.attributes?.open_url || pdf.attributes?.file_download_url;
-        setPdfViewer({ song, url });
+        const urlData = await pcoGet('attachmentUrl', {
+          serviceTypeId: song.serviceTypeId,
+          planId: song.planId,
+          planItemId: song.itemId || '',
+          attachmentId: pdf.id,
+          songId: song.songId || '',
+          arrangementId: song.arrangementId || ''
+        });
+        const url = urlData.data?.attributes?.open_url || urlData.data?.attributes?.file_download_url;
+        setPdfViewer({ song, url: url || 'none' });
       } else {
         setPdfViewer({ song, url: 'none' });
       }
@@ -1073,7 +1092,7 @@ function ServicesView({ onAddToSetlist }) {
       setPdfViewer({ song, url: 'error' });
     }
   }
-
+  
   function togglePlan(plan) {
     if (expandedPlan === plan.id) { setExpandedPlan(null); } else { setExpandedPlan(plan.id); loadPlanSongs(plan); }
   }
